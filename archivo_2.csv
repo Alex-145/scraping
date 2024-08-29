@@ -1,0 +1,16 @@
+nombre,edad,genero,ciudad,ingresos,educacion,estado_civil
+Juan,28,Masculino,Lima,4500,Universitario,Soltero
+María,35,Femenino,Arequipa,3500,Secundaria,Casado
+Luis,40,Masculino,Cusco,5200,Universitario,Casado
+Ana,22,Femenino,Lima,2800,Universitario,Soltero
+Walter,19,Masculino,Juliaca,3100,Técnico,Soltero
+Pedro,30,Masculino,Arequipa,4000,Técnico,Soltero
+Laura,27,Femenino,Lima,3200,Secundaria,Casado
+Carlos,29,Masculino,Cusco,4800,Universitario,Comprometido
+Sofía,25,Femenino,Lima,3000,Universitario,Soltero
+Esmeralda,23,Femenino,Juliaca,3200,Universitario,Soltero
+Andrés,33,Masculino,Arequipa,4200,Universitario,Casado
+Gabriela,31,Femenino,Lima,3800,Universitario,Divorciado
+Diego,26,Masculino,Cusco,3600,Técnico,Comprometido
+Ernesto,42,Masculino,Juliaca,4200,Técnico,Casado
+
