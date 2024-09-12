@@ -1,0 +1,68 @@
+import time
+import requests
+from bs4 import BeautifulSoup
+import csv
+import re
+
+# Listas para almacenar los datos
+titulos = []
+fechas = []
+enlaces = []
+contenidos = []
+
+# Iteración por las páginas del sitio
+for i in range(1, 300):
+    url = f"https://diariosinfronteras.com.pe/category/puno/page/{i}/"
+    print(f"Scraping URL: {url}")
+
+    try:
+        # Hacer solicitud a la página
+        solicitud = requests.get(url, timeout=10)
+        solicitud.raise_for_status()  # Verifica que la solicitud sea exitosa
+        dom_html = BeautifulSoup(solicitud.content, 'html.parser')
+        secciones = dom_html.find_all('h3', class_="entry-title")
+
+        # Extraer datos de cada sección
+        for seccion in secciones[:-5]:
+            try:
+                titulo = seccion.find('a').get('title')
+                enlace = seccion.find('a').get('href')
+
+                # Extraer fecha del enlace (siempre que esté presente en la URL)
+                patron_fecha = r"\b(\d{4})/(\d{2})/(\d{2})\b"
+                fecha = re.search(patron_fecha, enlace)
+                fecha_texto = fecha.group() if fecha else "Fecha no disponible"
+
+                # Obtener el contenido de la noticia
+                contenido_interno = requests.get(enlace, timeout=10)
+                html_interno = BeautifulSoup(contenido_interno.content, 'html.parser')
+                texto_noticia = html_interno.find('div', class_='post-content-bd')
+
+                if texto_noticia:
+                    noticia_limpia = re.sub(r'\s+', ' ', texto_noticia.text).strip()
+                else:
+                    noticia_limpia = "Contenido no disponible"
+
+                # Almacenar los datos
+                titulos.append(titulo)
+                fechas.append(fecha_texto)
+                enlaces.append(enlace)
+                contenidos.append(noticia_limpia)
+
+            except Exception as e:
+                print(f"Error procesando la sección: {e}")
+                continue  # Saltar a la siguiente sección si hay un error
+
+    except requests.RequestException as e:
+        print(f"Error accediendo a la página {url}: {e}")
+        continue  # Si hay un error en la solicitud, saltar a la siguiente página
+
+# Guardar los resultados en un archivo CSV
+with open('noticias_extraidas_300.csv', mode='w', newline='', encoding='utf-8-sig') as archivo:
+    escritor = csv.writer(archivo, delimiter='|')
+    escritor.writerow(["titulo", "fecha", "enlace", "contenido"])
+
+    for i1, i2, i3, i4 in zip(titulos, fechas, enlaces, contenidos):
+        escritor.writerow([i1, i2, i3, i4])
+
+print("Proceso terminado.")

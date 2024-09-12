@@ -11,7 +11,7 @@ fechas=[]
 enlaces=[]
 contenidos=[]
 
-for i in range(2,31):
+for i in range(1,30):
     url=f"https://diariosinfronteras.com.pe/category/puno/page/{i}/"
     print(url)
     solicitud = requests.get(url)
